@@ -3,26 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Sarah - Foto Privada</title>
+  <title>Sarah - Conteúdo Exclusivo</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
   
   <style>
     body { background-color: #000; font-family: 'Inter', sans-serif; overflow: hidden; }
     
+    /* Barra Rosa Neon */
     .progress-container {
       position: absolute; top: 10px; left: 2%; width: 96%; height: 4px;
       background: rgba(0,0,0,0.5); border-radius: 4px; z-index: 50; backdrop-filter: blur(2px);
     }
     .progress-bar {
       height: 100%; background: #ec4899; width: 0%; border-radius: 4px;
-      box-shadow: 0 0 10px #ec4899;
+      box-shadow: 0 0 10px #ec4899; /* Brilho neon rosa */
       transition: width linear;
     }
 
+    /* Tela de Bloqueio */
     #paywall {
-      display: none; opacity: 0; transition: opacity 0.4s ease;
-      background: #09090b;
+      display: none; opacity: 0; transition: opacity 0.3s ease;
+      background: #09090b; /* Fundo preto sólido */
     }
     #paywall.show { display: flex; opacity: 1; }
   </style>
@@ -30,7 +32,9 @@
 <body class="h-screen w-screen relative text-white">
 
   <div id="media-container" class="absolute inset-0 z-0 bg-black">
-    <img src="https://s3.meucanalvip.org/sarinhaperfeita/previa06.jpeg" class="w-full h-full object-cover">
+    <video id="myVideo" class="w-full h-full object-cover" autoplay muted playsinline>
+      <source src="https://s3.meucanalvip.org/sarinhaperfeita/conteudos01.mp4" type="video/mp4">
+    </video>
   </div>
 
   <div id="ui-overlay" class="progress-container">
@@ -45,33 +49,37 @@
     </div>
 
     <h2 class="text-2xl font-bold text-white mb-2">Conteúdo Privado</h2>
-    <p class="text-gray-400 mb-8 text-sm">
-      Essa foto expirou. <br> O acesso foi bloqueado automaticamente.
+    <p class="text-gray-400 mb-8 text-sm max-w-xs">
+      O tempo da prévia acabou. <br> O conteúdo foi bloqueado.
     </p>
 
-    <div class="mt-4 text-[10px] text-gray-600 uppercase tracking-widest">Acesso Restrito</div>
+    <div class="mt-4 text-[10px] text-gray-600 uppercase tracking-widest">Acesso Restrito • +18</div>
   </div>
 
   <script>
     // ================= CONFIGURAÇÃO =================
     // Defina o tempo de duração (em segundos)
-    const TEMPO_SEGUNDOS = 8; 
+    const TEMPO_SEGUNDOS = 14; 
     // ================================================
 
+    const video = document.getElementById('myVideo');
     const mediaContainer = document.getElementById('media-container');
     const paywall = document.getElementById('paywall');
     const progressBar = document.getElementById('progressBar');
     const uiOverlay = document.getElementById('ui-overlay');
 
+    // Inicia a barra
     setTimeout(() => {
       progressBar.style.transition = `width ${TEMPO_SEGUNDOS}s linear`;
       progressBar.style.width = '100%';
     }, 100);
 
+    // Bloqueia quando o tempo acaba
     setTimeout(() => {
-      mediaContainer.style.display = 'none'; 
-      uiOverlay.style.display = 'none';
-      paywall.classList.add('show');
+      video.pause(); 
+      mediaContainer.style.display = 'none'; // Remove o vídeo
+      uiOverlay.style.display = 'none'; // Remove a barra
+      paywall.classList.add('show'); // Mostra a tela preta com cadeado
     }, TEMPO_SEGUNDOS * 1000);
   </script>
 </body>
